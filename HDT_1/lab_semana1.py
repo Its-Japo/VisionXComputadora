@@ -15,7 +15,7 @@ def show_img(img, title="Imagen", cmap=None):
     plt.title(title)
     # TODO: Matplotlib espera RGB, OpenCV carga BGR.
     # Verifica si la imagen tiene 3 canales y conviértela para visualización correcta.
-    if len(img.shape) == 3 and cmap is None:
+    if img.ndim == 3 and img.shape[2] == 3:
         img_show = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     else:
         img_show = img
@@ -69,21 +69,17 @@ def hsv_segmentation(image):
     """
     Segmentar un objeto de color específico (ej. verde o rojo)
     """
-    # 1. Convertir a HSV
+    # 1. Convertir de BGR a HSV
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    
-    # RETO 3: Definir rangos para un color.
-    # OJO: En OpenCV Hue es [0, 179].
-    # Ejemplo: Si buscas verde, H está alrededor de 60 (en escala 0-179).
-    
-    # TODO: Definir lower_bound y upper_bound (np.array)
-    lower_bound = np.array([0, 0, 0]) 
-    upper_bound = np.array([0, 0, 0])
-    
-    # Crear máscara
+
+    # 2. Definir rangos para aislar color
+    lower_bound = np.array([20, 100, 100], dtype=np.uint8)
+    upper_bound = np.array([35, 255, 255], dtype=np.uint8)
+
+    # 3. Crear máscara binaria
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
-    
-    # Aplicar máscara a la imagen original (bitwise_and)
+
+    # 4. Aplicar máscara sobre la imagen original
     result = cv2.bitwise_and(image, image, mask=mask)
     return result
 
