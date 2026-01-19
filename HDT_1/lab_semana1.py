@@ -1,3 +1,11 @@
+"""
+Vision por computadora
+
+Nelson García Bravatti
+Joaquín Puente
+Diego Linares
+"""
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,26 +34,35 @@ def manual_contrast_brightness(image, alpha, beta):
     Returns:
         numpy array uint8
     """
-    # RETO 1: Implementar pipeline seguro
-    # 1. Convertir a float32 y normalizar a [0, 1]
-    # 2. Aplicar fórmula matemática vectorizada (Sin bucles for)
-    # 3. Aplicar np.clip para evitar valores fuera de rango
-    # 4. Des-normalizar (x255) y castear a uint8
+    # 1. Convertir a float32 y normalizar
+    img_float = image.astype(np.float32) / 255.0
+
+    # 2. Aplicar contraste y brillo (vectorizado)
+    processed = alpha * img_float + (beta / 255.0)
+
+    # 3. Clipping al rango [0, 1]
+    processed = np.clip(processed, 0.0, 1.0)
+
+    # 4. Des-normalizar y convertir a uint8
+    processed_img = (processed * 255).astype(np.uint8)
     
-    # TODO: Escribir código aquí
-    processed_img = np.zeros_like(image) # Placeholder
     return processed_img
 
 def manual_gamma_correction(image, gamma):
     """
     Aplica V_out = V_in ^ gamma
     """
-    # RETO 2: Implementar corrección Gamma
-    # Recordar: La operación potencia es costosa. 
-    # Usar Look-Up Table (LUT) es una optimización común, pero aquí usa matemáticas directas en float.
-    
-    # TODO: Escribir código aquí
-    gamma_img = np.zeros_like(image) # Placeholder
+    # 1. Convertir a float32 y normalizar
+    img_float = image.astype(np.float32) / 255.0
+
+    # 2. Corrección gamma (vectorizada)
+    gamma_corrected = np.power(img_float, gamma)
+
+    # 3. Clipping por seguridad
+    gamma_corrected = np.clip(gamma_corrected, 0.0, 1.0)
+
+    # 4. Volver a uint8
+    gamma_img = (gamma_corrected * 255).astype(np.uint8)
     return gamma_img
 
 def hsv_segmentation(image):
