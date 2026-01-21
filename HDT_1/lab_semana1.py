@@ -37,7 +37,7 @@ def manual_contrast_brightness(image, alpha, beta):
     # 1. Convertir a float32 y normalizar
     img_float = image.astype(np.float32) / 255.0
 
-    # 2. Aplicar contraste y brillo (vectorizado)
+    # 2. Aplicar contraste y brillo
     processed = alpha * img_float + (beta / 255.0)
 
     # 3. Clipping al rango [0, 1]
@@ -55,7 +55,7 @@ def manual_gamma_correction(image, gamma):
     # 1. Convertir a float32 y normalizar
     img_float = image.astype(np.float32) / 255.0
 
-    # 2. Corrección gamma (vectorizada)
+    # 2. Corrección gamma
     gamma_corrected = np.power(img_float, gamma)
 
     # 3. Clipping por seguridad
@@ -85,7 +85,7 @@ def hsv_segmentation(image):
 
 # --- BLOQUE PRINCIPAL ---
 if __name__ == "__main__":
-    # Cargar imagen (Asegúrate de tener una imagen 'sample.jpg')
+    # Cargar imagen 
     img = cv2.imread('copa.jpg')
     
     if img is None:
